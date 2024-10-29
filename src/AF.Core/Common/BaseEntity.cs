@@ -1,4 +1,4 @@
-﻿namespace AF.Domain.Common;
+﻿namespace AF.Core.Common;
 
 public abstract class BaseEntity
 {

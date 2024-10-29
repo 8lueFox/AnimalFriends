@@ -1,6 +1,6 @@
-﻿namespace AF.Domain.Common;
+﻿namespace AF.Core.Common;
 
-public class BaseAuditableEntity : BaseEntity
+public class BaseAuditableEntity : BaseEntity, IHasId
 {
     public DateTimeOffset Created { get; set; }
     public string? CreatedBy { get; set; }

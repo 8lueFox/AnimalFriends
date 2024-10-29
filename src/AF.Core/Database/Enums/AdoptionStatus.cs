@@ -1,4 +1,4 @@
-﻿namespace AF.Domain.Enums;
+﻿namespace AF.Core.Database.Enums;
 
 public enum AdoptionStatus
 {

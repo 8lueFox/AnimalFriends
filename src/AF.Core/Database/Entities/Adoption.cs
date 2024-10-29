@@ -1,4 +1,4 @@
-﻿namespace AF.Domain.Entities;
+﻿namespace AF.Core.Database.Entities;
 
 /// <summary>
 /// It is required to fill in at least one source of information.

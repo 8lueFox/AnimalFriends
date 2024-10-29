@@ -1,13 +1,13 @@
-namespace AF.Domain.Entities;
+namespace AF.Core.Database.Entities;
 
-public class Animal : BaseAuditableEntity
+public class Animal : BaseAuditableEntity, IHasIdWithName
 {
     public Guid ShelterId { get; set; }
     
     public string Name { get; set; } = string.Empty;
 
-    public string Gender { get; set; } = string.Empty;
-
+    public Gender Gender { get; set; }
+    
     /// <summary>
     /// E.g. dog, cat, hamster
     /// </summary>
@@ -17,6 +17,7 @@ public class Animal : BaseAuditableEntity
     /// E.g. Golden retriever, American Staffordshire Terrier
     /// </summary>
     public string Breed { get; set; } = string.Empty;
+    
     /// <summary>
     /// Date of arrival at the shelter
     /// </summary>

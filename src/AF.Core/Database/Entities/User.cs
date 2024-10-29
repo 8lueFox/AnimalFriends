@@ -1,5 +1,4 @@
-﻿
-namespace AF.Domain.Entities;
+﻿namespace AF.Core.Database.Entities;
 
 public class User : BaseAuditableEntity
 {
