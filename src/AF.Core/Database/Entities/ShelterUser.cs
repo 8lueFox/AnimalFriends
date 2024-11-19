@@ -1,6 +1,6 @@
 namespace AF.Core.Database.Entities;
 
-public class ShelterUser : BaseAuditableEntity
+public class ShelterUser : IHasId
 {
     public Guid UserId { get; set; }
     
@@ -15,4 +15,5 @@ public class ShelterUser : BaseAuditableEntity
     public virtual User? User { get; set; }
     
     public virtual Shelter? Shelter { get; set; }
+    public Guid Id { get; init; }
 }

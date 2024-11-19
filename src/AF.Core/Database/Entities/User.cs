@@ -18,7 +18,7 @@ public class User : BaseAuditableEntity
 
     public DateTime Birthday { get; set; }
 
-    public string HashedPassword { get; set; } = string.Empty;
+    public required byte[] HashedPassword { get; set; }
 
     
     public virtual IList<ShelterUser> Shelters { get; set; }
@@ -26,4 +26,6 @@ public class User : BaseAuditableEntity
     public virtual IList<Animal> AssignedAnimals { get; set; }
     
     public virtual IList<Departure> Departures { get; set; }
+    
+    public virtual IList<Adoption> Adoptions { get; set; }
 }

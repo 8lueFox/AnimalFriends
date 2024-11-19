@@ -35,4 +35,6 @@ public class Animal : BaseAuditableEntity, IHasIdWithName
     public virtual Shelter? Shelter { get; set; }
     
     public virtual User? AssignedUser { get; set; }
+    
+    public virtual IList<Adoption> Adoptions { get; set; }
 }

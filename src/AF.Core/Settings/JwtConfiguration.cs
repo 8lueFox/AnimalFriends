@@ -1,8 +1,8 @@
 ﻿namespace AF.Core.Settings;
 
-public class JwtSettings
+public class JwtConfiguration
 {
-    public const string SectionName = nameof(JwtSettings);
+    public const string SectionName = nameof(JwtConfiguration);
     
     public string Issuer { get; init; } = string.Empty;
     

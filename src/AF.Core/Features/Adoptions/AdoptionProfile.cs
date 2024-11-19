@@ -8,5 +8,6 @@ public class AdoptionProfile : Profile
     public AdoptionProfile()
     {
         CreateMap<CreateAdoptionCommand, Adoption>();
+        CreateMap<UpdateAdoptionCommand, Adoption>();
     }
 }
