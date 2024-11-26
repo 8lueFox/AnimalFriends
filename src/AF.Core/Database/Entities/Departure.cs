@@ -6,7 +6,7 @@ public class Departure : BaseAuditableEntity
 
     public Guid UserId { get; set; }
 
-    public DateTime DepartureDate { get; set; }
+    public DateTimeOffset DepartureDate { get; set; }
 
     public string? Notes { get; set; }
 

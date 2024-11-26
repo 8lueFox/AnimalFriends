@@ -21,7 +21,7 @@ public class Adoption : BaseAuditableEntity
     
     public string? Phone { get; set; }
 
-    public DateTime? AdoptionDate { get; set; }
+    public DateOnly? AdoptionDate { get; set; }
 
     public AdoptionStatus AdoptionStatus { get; set; }
     

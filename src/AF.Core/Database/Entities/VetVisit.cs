@@ -6,7 +6,7 @@ public class VetVisit : BaseAuditableEntity
 
     public string VetName { get; set; } = string.Empty;
 
-    public DateTime VisitDate { get; set; }
+    public DateOnly VisitDate { get; set; }
 
     public string Diagnosis { get; set; } = string.Empty;
 

@@ -1,5 +1,6 @@
 ﻿using AF.Core.Database.Entities;
 using AF.Core.Database.Enums;
+using AF.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -17,11 +18,11 @@ internal class AdoptionConfiguration : IEntityTypeConfiguration<Adoption>
         builder.Property(x => x.Address).HasMaxLength(1000);
         builder.Property(x => x.Email).HasMaxLength(100);
         builder.Property(x => x.Phone).HasMaxLength(20);
+        
         builder.Property(x => x.AdoptionStatus).HasConversion(new EnumToStringConverter<AdoptionStatus>())
             .HasMaxLength(20);
-        builder.Property(x => x.AdoptionDate).HasColumnType("date");
-        builder.Property(x => x.CreatedBy).HasMaxLength(100);
-        builder.Property(x => x.Created).HasDefaultValue(DateTimeOffset.Now);
+        builder.Property(x => x.AdoptionDate).HasDefaultValue(DateTime.Now).HasConversion<DateOnlyConverter>()
+            .HasColumnType("date");
         
         builder.HasOne(b => b.Animal)
             .WithMany(a => a.Adoptions)

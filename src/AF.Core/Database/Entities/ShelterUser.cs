@@ -6,7 +6,7 @@ public class ShelterUser : IHasId
     
     public Guid ShelterId { get; set; }
 
-    public DateTime StarDate { get; set; }
+    public DateOnly StarDate { get; set; }
 
     public bool IsOwner { get; set; }
     

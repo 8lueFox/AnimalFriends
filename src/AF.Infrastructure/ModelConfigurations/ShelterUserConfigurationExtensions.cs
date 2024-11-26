@@ -1,4 +1,5 @@
 ﻿using AF.Core.Database.Entities;
+using AF.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -11,10 +12,14 @@ public class ShelterUserConfigurationExtensions : IEntityTypeConfiguration<Shelt
         builder.HasIndex(x => x.Id).IsUnique();
         builder.HasKey(e => new { e.UserId, e.ShelterId });
 
-        builder.Property(x => x.StarDate).IsRequired().HasColumnType("date");
+        builder.Property(x => x.StarDate)
+            .IsRequired()
+            .HasDefaultValue(DateTime.Now)
+            .HasConversion<DateOnlyConverter>()
+            .HasColumnType("date");
         builder.Property(x => x.IsOwner).HasDefaultValue(false);
         builder.Property(x => x.IsAdmin).HasDefaultValue(false);
-        
+
         builder.HasOne(b => b.User)
             .WithMany(a => a.Shelters)
             .HasForeignKey(b => b.UserId)

@@ -3,6 +3,7 @@ namespace AF.Core.Database.Entities;
 public class Animal : BaseAuditableEntity, IHasIdWithName
 {
     public Guid ShelterId { get; set; }
+    public Guid? UserId { get; set; }
     
     public string Name { get; set; } = string.Empty;
 
@@ -21,7 +22,7 @@ public class Animal : BaseAuditableEntity, IHasIdWithName
     /// <summary>
     /// Date of arrival at the shelter
     /// </summary>
-    public DateTime ArrivalDate { get; set; }
+    public DateOnly ArrivalDate { get; set; }
 
     public string Age { get; set; } = string.Empty;
 
@@ -37,4 +38,6 @@ public class Animal : BaseAuditableEntity, IHasIdWithName
     public virtual User? AssignedUser { get; set; }
     
     public virtual IList<Adoption> Adoptions { get; set; }
+    public virtual IList<Departure> Departures { get; set; }
+    public virtual IList<VetVisit> VetVisits { get; set; }
 }

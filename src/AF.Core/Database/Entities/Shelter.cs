@@ -9,4 +9,5 @@ public class Shelter : BaseAuditableEntity
     public string BankAccount { get; set; } = string.Empty;
     
     public virtual IList<ShelterUser> Users { get; set; }
+    public virtual IList<Animal> Animals { get; set; }
 }
