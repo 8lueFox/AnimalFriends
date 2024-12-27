@@ -4,6 +4,8 @@ using AF.Core.Services;
 using AF.Core.Services.Interfaces;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AF.Core;
@@ -21,5 +23,10 @@ public static class ServiceCollectionExtensions
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
         return services;
+    }
+    
+    public static void UseHttpManager(this IApplicationBuilder applicationBuilder)
+    {
+        HttpManager.Configure(applicationBuilder.ApplicationServices.GetRequiredService<IHttpContextAccessor>());
     }
 }

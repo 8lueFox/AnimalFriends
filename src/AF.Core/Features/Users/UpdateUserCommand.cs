@@ -12,7 +12,6 @@ using MediatR;
 namespace AF.Core.Features.Users;
 
 public record UpdateUserCommand(
-    Guid UserId,
     string UserName,
     string FirstName,
     string LastName,
@@ -27,10 +26,6 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
     public UpdateUserCommandValidator(IUserRepository userRepository)
     {
-        RuleFor(x => x.UserId)
-            .NotEmpty()
-            .EntityExists(userRepository);
-        
         RuleFor(x => x.UserName)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
@@ -78,13 +73,15 @@ public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 
 internal class UpdateUserCommandHandler(
     IMapper mapper,
-    IUserRepository userRepository)
+    IUserRepository userRepository,
+    RequestContext requestContext)
     : IRequestHandler<UpdateUserCommand>
 {
     public Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var entry = mapper.Map<User>(request);
-
+        entry.Id = (Guid)requestContext.UserId;
+        
         userRepository.Update(entry);
 
         return Task.FromResult(entry);

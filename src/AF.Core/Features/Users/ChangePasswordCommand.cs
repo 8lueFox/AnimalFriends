@@ -7,16 +7,14 @@ using MediatR;
 
 namespace AF.Core.Features.Users;
 
-public record ChangePasswordCommand(Guid UserId, string OldPassword, string NewPassword, string ConfirmPassword)
+public record ChangePasswordCommand(string OldPassword, string NewPassword, string ConfirmPassword)
     : IRequest;
 
 public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCommand>
 {
     public ChangePasswordCommandValidator(IUserRepository userRepository,
-        ICryptoProvider cryptoProvider)
+        ICryptoProvider cryptoProvider, RequestContext requestContext)
     {
-        RuleFor(x => x.UserId)
-            .EntityExists(userRepository);
 
         RuleFor(x => x.NewPassword)
             .Must(CreateUserCommandValidator.IsValidPassword)
@@ -24,14 +22,14 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
             .Equal(x => x.ConfirmPassword);
 
         RuleFor(x => x)
-            .Must(x => IsOldPasswordValid(x, userRepository, cryptoProvider))
+            .Must(x => IsOldPasswordValid(x, userRepository, cryptoProvider, requestContext))
             .WithMessage("Old password is not valid");
     }
 
     private static bool IsOldPasswordValid(ChangePasswordCommand cmd, IUserRepository userRepository,
-        ICryptoProvider cryptoProvider)
+        ICryptoProvider cryptoProvider, RequestContext requestContext)
     {
-        var entry = userRepository.GetById(cmd.UserId);
+        var entry = userRepository.GetById((Guid)requestContext.UserId);
         var unprotectedPasswordBytes = cryptoProvider.Unprotect(entry.HashedPassword, entry.Email);
         var unprotectedPassword = Encoding.UTF8.GetChars(unprotectedPasswordBytes).Aggregate(string.Empty, (current, @char) => current + @char);
         return unprotectedPassword.Equals(cmd.OldPassword);
@@ -40,11 +38,12 @@ public class ChangePasswordCommandValidator : AbstractValidator<ChangePasswordCo
 
 internal class ChangePasswordCommandHandler(
     IUserRepository userRepository,
-    ICryptoProvider cryptoProvider) : IRequestHandler<ChangePasswordCommand>
+    ICryptoProvider cryptoProvider,
+    RequestContext requestContext) : IRequestHandler<ChangePasswordCommand>
 {
     public Task Handle(ChangePasswordCommand request, CancellationToken cancellationToken)
     {
-        var entry = userRepository.GetById(request.UserId);
+        var entry = userRepository.GetById((Guid)requestContext.UserId);
 
         entry.HashedPassword = cryptoProvider.Protect(Encoding.UTF8.GetBytes(request.NewPassword), entry.Email);
 
