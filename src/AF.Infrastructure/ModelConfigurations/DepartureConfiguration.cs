@@ -10,7 +10,7 @@ public class DepartureConfiguration : IEntityTypeConfiguration<Departure>
     {
         builder.ConfigDefaultProperties();
 
-        builder.Property(x => x.DepartureDate).HasDefaultValue(DateTimeOffset.Now).HasColumnType("datetimeoffset");
+        builder.Property(x => x.DepartureDate).HasDefaultValueSql("getdate()").HasColumnType("datetimeoffset");
         builder.Property(x => x.Notes).HasMaxLength(1000);
 
         builder.HasOne(b => b.User)
@@ -21,7 +21,7 @@ public class DepartureConfiguration : IEntityTypeConfiguration<Departure>
 
         builder.HasOne(b => b.Animal)
             .WithMany(a => a.Departures)
-            .HasForeignKey(b => b.AnimaId)
+            .HasForeignKey(b => b.AnimalId)
             .OnDelete(DeleteBehavior.ClientSetNull)
             .HasConstraintName("FK_Departure_Animal");
     }

@@ -7,7 +7,7 @@ namespace AF.Core.Features.Shelters;
 
 public record ChangeUserPermissionsToShelterCommand(Guid Id, bool IsAdmin, bool IsOwner) : IRequest;
 
-internal class ChangeUserPermissionsToShelterCommandValidator : AbstractValidator<ChangeUserPermissionsToShelterCommand>
+public class ChangeUserPermissionsToShelterCommandValidator : AbstractValidator<ChangeUserPermissionsToShelterCommand>
 {
     public ChangeUserPermissionsToShelterCommandValidator(IShelterUserRepository shelterUserRepository)
     {

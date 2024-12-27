@@ -2,7 +2,7 @@ namespace AF.Core.Database.Entities;
 
 public class Departure : BaseAuditableEntity
 {
-    public Guid AnimaId { get; set; }
+    public Guid AnimalId { get; set; }
 
     public Guid UserId { get; set; }
 

@@ -2,6 +2,7 @@ namespace AF.Core.Database.Entities;
 
 public class ShelterUser : IHasId
 {
+    public Guid Id { get; }
     public Guid UserId { get; set; }
     
     public Guid ShelterId { get; set; }
@@ -15,5 +16,4 @@ public class ShelterUser : IHasId
     public virtual User? User { get; set; }
     
     public virtual Shelter? Shelter { get; set; }
-    public Guid Id { get; init; }
 }

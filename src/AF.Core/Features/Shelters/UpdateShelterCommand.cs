@@ -10,7 +10,7 @@ namespace AF.Core.Features.Shelters;
 public record UpdateShelterCommand(Guid Id, string Name, string Address, string Phone, string Email, string BankAccount)
     : IRequest<Shelter>;
 
-internal class UpdateShelterCommandValidator : AbstractValidator<UpdateShelterCommand>
+public class UpdateShelterCommandValidator : AbstractValidator<UpdateShelterCommand>
 {
     public UpdateShelterCommandValidator(IShelterRepository shelterRepository)
     {
@@ -44,7 +44,7 @@ internal class UpdateShelterCommandValidator : AbstractValidator<UpdateShelterCo
     }
 }
 
-internal class UpdateShelterCommandHandler(IMapperBase mapper, IShelterRepository shelterRepository)
+internal class UpdateShelterCommandHandler(IMapper mapper, IShelterRepository shelterRepository)
     : IRequestHandler<UpdateShelterCommand, Shelter>
 {
     public Task<Shelter> Handle(UpdateShelterCommand request, CancellationToken cancellationToken)

@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using AF.Core.Database.Entities;
 using AF.Core.Database.Repositories;
+using AF.Core.Extensions;
 using AF.Core.Services.Interfaces;
 using AutoMapper;
 using FluentValidation;
@@ -10,7 +11,8 @@ using MediatR;
 
 namespace AF.Core.Features.Users;
 
-public record CreateUserCommand(
+public record UpdateUserCommand(
+    Guid UserId,
     string UserName,
     string FirstName,
     string LastName,
@@ -18,14 +20,17 @@ public record CreateUserCommand(
     string Phone,
     string Address,
     string Gender,
-    DateOnly Birthday,
-    string Password,
-    string PasswordConfirm) : IRequest<User>;
-
-public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
+    DateOnly Birthday) : IRequest;
+    
+    
+public class UpdateUserCommandValidator : AbstractValidator<UpdateUserCommand>
 {
-    public CreateUserCommandValidator(IUserRepository userRepository)
+    public UpdateUserCommandValidator(IUserRepository userRepository)
     {
+        RuleFor(x => x.UserId)
+            .NotEmpty()
+            .EntityExists(userRepository);
+        
         RuleFor(x => x.UserName)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
@@ -67,35 +72,20 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
         RuleFor(x => x.Birthday)
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
-            .GreaterThan(DateOnly.FromDateTime(DateTime.Now.AddYears(-100)));
-
-        RuleFor(x => x.Password)
-            .Must(IsValidPassword)
-            .WithMessage("Password is not valid (requires at least 8 characters, big letter, small letter and special character).")
-            .Equal(x => x.PasswordConfirm);
-    }
-
-    public static bool IsValidPassword(string plainText)
-    {
-        var regex = new Regex(@"^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
-        var match = regex.Match(plainText);
-        return match.Success;
+            .GreaterThan(DateOnly.FromDateTime(DateTime.Now.AddYears(100)));
     }
 }
 
-internal class CreateUserCommandHandler(
+internal class UpdateUserCommandHandler(
     IMapper mapper,
-    ICryptoProvider cryptoProvider,
     IUserRepository userRepository)
-    : IRequestHandler<CreateUserCommand, User>
+    : IRequestHandler<UpdateUserCommand>
 {
-    public Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+    public Task Handle(UpdateUserCommand request, CancellationToken cancellationToken)
     {
         var entry = mapper.Map<User>(request);
 
-        entry.HashedPassword = cryptoProvider.Protect(Encoding.UTF8.GetBytes(request.Password), request.Email);
-
-        userRepository.Add(entry);
+        userRepository.Update(entry);
 
         return Task.FromResult(entry);
     }

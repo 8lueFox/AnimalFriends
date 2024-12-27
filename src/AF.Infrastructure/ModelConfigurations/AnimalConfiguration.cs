@@ -22,7 +22,7 @@ public class AnimalConfiguration : IEntityTypeConfiguration<Animal>
         builder.Property(x => x.Breed).HasMaxLength(100);
         builder.Property(x => x.Age).HasMaxLength(100);
         builder.Property(x => x.HealthStatus).HasMaxLength(100);
-        builder.Property(x => x.ArrivalDate).HasDefaultValue(DateTime.Now).HasConversion<DateOnlyConverter>()
+        builder.Property(x => x.ArrivalDate).HasDefaultValueSql("getdate()").HasConversion<DateOnlyConverter>()
             .HasColumnType("date");
 
         builder.HasOne(b => b.Shelter)

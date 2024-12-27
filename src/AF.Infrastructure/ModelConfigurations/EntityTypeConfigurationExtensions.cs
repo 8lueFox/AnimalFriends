@@ -14,7 +14,7 @@ public static class EntityTypeConfigurationExtensions
         builder.Property(x => x.CreatedBy).HasMaxLength(100);
         builder.Property(x => x.LastModifiedBy).HasMaxLength(100);
         builder.Property(x => x.Created).IsRequired().HasColumnType("datetimeoffset")
-            .HasDefaultValue(DateTimeOffset.Now);
+            .HasDefaultValueSql("getdate()");
         builder.Property(x => x.LastModified).HasColumnType("datetimeoffset");
     }
 }

@@ -21,7 +21,7 @@ internal class AdoptionConfiguration : IEntityTypeConfiguration<Adoption>
         
         builder.Property(x => x.AdoptionStatus).HasConversion(new EnumToStringConverter<AdoptionStatus>())
             .HasMaxLength(20);
-        builder.Property(x => x.AdoptionDate).HasDefaultValue(DateTime.Now).HasConversion<DateOnlyConverter>()
+        builder.Property(x => x.AdoptionDate).HasDefaultValueSql("getdate()").HasConversion<DateOnlyConverter>()
             .HasColumnType("date");
         
         builder.HasOne(b => b.Animal)

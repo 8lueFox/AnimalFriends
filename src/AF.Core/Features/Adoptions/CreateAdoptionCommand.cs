@@ -17,7 +17,7 @@ public record CreateAdoptionCommand(
     string? Phone,
     DateTime? AdoptionDate) : IRequest<Adoption>;
 
-internal class CreateAdoptionCommandValidator : AbstractValidator<CreateAdoptionCommand>
+public class CreateAdoptionCommandValidator : AbstractValidator<CreateAdoptionCommand>
 {
     public CreateAdoptionCommandValidator(IAnimalRepository animalRepository, IUserRepository userRepository)
     {
@@ -52,7 +52,7 @@ internal class CreateAdoptionCommandValidator : AbstractValidator<CreateAdoption
     }
 }
 
-internal class CreateAdoptionCommandHandler(IMapperBase mapper, IAdoptionRepository adoptionRepository)
+internal class CreateAdoptionCommandHandler(IMapper mapper, IAdoptionRepository adoptionRepository)
     : IRequestHandler<CreateAdoptionCommand, Adoption>
 {
     public Task<Adoption> Handle(CreateAdoptionCommand request, CancellationToken cancellationToken)

@@ -14,7 +14,7 @@ public class ShelterUserConfigurationExtensions : IEntityTypeConfiguration<Shelt
 
         builder.Property(x => x.StarDate)
             .IsRequired()
-            .HasDefaultValue(DateTime.Now)
+            .HasDefaultValueSql("getdate()")
             .HasConversion<DateOnlyConverter>()
             .HasColumnType("date");
         builder.Property(x => x.IsOwner).HasDefaultValue(false);

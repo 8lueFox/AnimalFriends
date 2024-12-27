@@ -9,7 +9,7 @@ namespace AF.Core.Features.Shelters;
 public record CreateShelterCommand(string Name, string Address, string Phone, string Email, string BankAccount)
     : IRequest<Shelter>;
 
-internal class CreateShelterCommandValidator : AbstractValidator<CreateShelterCommand>
+public class CreateShelterCommandValidator : AbstractValidator<CreateShelterCommand>
 {
     public CreateShelterCommandValidator()
     {
@@ -40,7 +40,7 @@ internal class CreateShelterCommandValidator : AbstractValidator<CreateShelterCo
     }
 }
 
-internal class CreateShelterCommandHandler(IMapperBase mapper, IShelterRepository shelterRepository)
+internal class CreateShelterCommandHandler(IMapper mapper, IShelterRepository shelterRepository)
     : IRequestHandler<CreateShelterCommand, Shelter>
 {
     public Task<Shelter> Handle(CreateShelterCommand request, CancellationToken cancellationToken)

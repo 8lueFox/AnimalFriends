@@ -19,7 +19,7 @@ public record UpdateAnimalCommand(
     string HealthStatus,
     bool VaccinationStatus) : IRequest<Animal>;
 
-internal class UpdateAnimalCommandValidator : AbstractValidator<UpdateAnimalCommand>
+public class UpdateAnimalCommandValidator : AbstractValidator<UpdateAnimalCommand>
 {
     public UpdateAnimalCommandValidator(IShelterRepository shelterRepository, IAnimalRepository animalRepository)
     {
@@ -59,7 +59,7 @@ internal class UpdateAnimalCommandValidator : AbstractValidator<UpdateAnimalComm
     }
 }
 
-internal class UpdateAnimalCommandHandler(IMapperBase mapper, IAnimalRepository animalRepository)
+internal class UpdateAnimalCommandHandler(IMapper mapper, IAnimalRepository animalRepository)
     : IRequestHandler<UpdateAnimalCommand, Animal>
 {
     public Task<Animal> Handle(UpdateAnimalCommand request, CancellationToken cancellationToken)

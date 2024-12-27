@@ -13,7 +13,7 @@ public class VetVisitConfiguration : IEntityTypeConfiguration<VetVisit>
         builder.Property(x => x.Diagnosis).IsRequired().HasMaxLength(2000);
         builder.Property(x => x.Treatment).IsRequired().HasMaxLength(2000);
         
-        builder.Property(x => x.VisitDate).HasDefaultValue(DateTime.Now).HasConversion<DateOnlyConverter>()
+        builder.Property(x => x.VisitDate).HasDefaultValueSql("getdate()").HasConversion<DateOnlyConverter>()
             .HasColumnType("date");
         
         builder.HasOne(b => b.Animal)
