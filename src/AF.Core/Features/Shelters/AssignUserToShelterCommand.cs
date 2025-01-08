@@ -27,3 +27,20 @@ public class AssignUserToShelterCommandValidator : AbstractValidator<AssignUserT
             .WithMessage("Entities are already connected.");
     }
 }
+
+internal class AssignUserToShelterCommandHandler(IShelterUserRepository shelterUserRepository) : IRequestHandler<AssignUserToShelterCommand, ShelterUser>
+{
+    public Task<ShelterUser> Handle(AssignUserToShelterCommand request, CancellationToken cancellationToken)
+    {
+        var entry = new ShelterUser
+        {
+            ShelterId = request.ShelterId,
+            UserId = request.UserId,
+            StarDate = DateOnly.FromDateTime(DateTime.Now)
+        };
+        
+        shelterUserRepository.Add(entry);
+        
+        return Task.FromResult(entry);
+    }
+}

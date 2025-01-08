@@ -1,4 +1,6 @@
-﻿namespace AF.Core.Database.Repositories;
+﻿using System.Linq.Expressions;
+
+namespace AF.Core.Database.Repositories;
 
 public interface IRepositoryBase<T>
     where T : class, IHasId

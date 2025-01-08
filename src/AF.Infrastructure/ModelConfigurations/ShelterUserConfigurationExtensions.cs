@@ -9,7 +9,6 @@ public class ShelterUserConfigurationExtensions : IEntityTypeConfiguration<Shelt
 {
     public void Configure(EntityTypeBuilder<ShelterUser> builder)
     {
-        builder.HasIndex(x => x.Id).IsUnique();
         builder.HasKey(e => new { e.UserId, e.ShelterId });
 
         builder.Property(x => x.StarDate)

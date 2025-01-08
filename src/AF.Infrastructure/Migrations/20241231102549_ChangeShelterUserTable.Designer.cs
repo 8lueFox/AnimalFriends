@@ -4,6 +4,7 @@ using AF.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AF.Infrastructure.Migrations
 {
     [DbContext(typeof(AfDbContext))]
-    partial class AfDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241231102549_ChangeShelterUserTable")]
+    partial class ChangeShelterUserTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -234,6 +237,7 @@ namespace AF.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("BankAccount")
+                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
@@ -451,7 +455,7 @@ namespace AF.Infrastructure.Migrations
                         .WithMany("Animals")
                         .HasForeignKey("ShelterId")
                         .IsRequired()
-                        .HasConstraintName("FK_Animals_Shelter");
+                        .HasConstraintName("FK_Animal_Shelter");
 
                     b.HasOne("AF.Core.Database.Entities.User", "AssignedUser")
                         .WithMany("AssignedAnimals")

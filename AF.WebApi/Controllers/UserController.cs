@@ -25,7 +25,7 @@ public class UserController(IMediator mediator) : BaseController(mediator)
         => await mediator.Send(command);
 
     [HttpPut]
-    public async Task<ActionResult<Guid>> Update(UpdateUserCommand command)
+    public async Task<ActionResult> Update(UpdateUserCommand command)
     {
         await mediator.Send(command);
         
@@ -39,4 +39,8 @@ public class UserController(IMediator mediator) : BaseController(mediator)
         
         return NoContent();
     }
+    
+    [HttpGet]
+    public async Task<ActionResult<UserDto>> GetCurrentUser()
+        => await mediator.Send(new GetCurrentUserQuery());
 }

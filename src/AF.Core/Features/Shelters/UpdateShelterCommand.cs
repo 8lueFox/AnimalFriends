@@ -7,7 +7,7 @@ using MediatR;
 
 namespace AF.Core.Features.Shelters;
 
-public record UpdateShelterCommand(Guid Id, string Name, string Address, string Phone, string Email, string BankAccount)
+public record UpdateShelterCommand(Guid Id, string Name, string Address, string Phone, string Email, string? BankAccount)
     : IRequest<Shelter>;
 
 public class UpdateShelterCommandValidator : AbstractValidator<UpdateShelterCommand>
@@ -36,11 +36,6 @@ public class UpdateShelterCommandValidator : AbstractValidator<UpdateShelterComm
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .EmailAddress();
-
-        RuleFor(x => x.BankAccount)
-            .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .MinimumLength(5);
     }
 }
 

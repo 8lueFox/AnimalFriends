@@ -1,5 +1,6 @@
 ﻿using AF.Core.Database.Entities;
 using AF.Core.Database.Repositories;
+using AF.Core.Exceptions;
 using AF.Core.Extensions;
 
 namespace AF.Infrastructure.Repositories;
@@ -8,12 +9,12 @@ public class ShelterUserRepository(AfDbContext dbContext): IShelterUserRepositor
 {
     public IQueryable<ShelterUser> Items => dbContext.ShelterUsers;
     
-    public ShelterUser? GetById(Guid id)
+    public ShelterUser GetById(Guid userId, Guid shelterId)
     {
-        var item = Items.FirstOrDefault(a => a.Id == id);
+        var item = Items.FirstOrDefault(a => a.UserId == userId && a.ShelterId == shelterId);
 
         if (item == null)
-            throw new ArgumentOutOfRangeException(nameof(id));
+            throw new EntityDoesNotExistException();
 
         return item;
     }
@@ -22,10 +23,10 @@ public class ShelterUserRepository(AfDbContext dbContext): IShelterUserRepositor
     {
         obj.ThrowIfNull(nameof(obj));
 
-        var entity = GetById(obj.Id);
+        var entity = GetById(obj.UserId, obj.ShelterId);
         
         if (entity == null)
-            throw new ArgumentOutOfRangeException(nameof(entity.Id));
+            throw new EntityDoesNotExistException();
 
         entity.UserId = obj.UserId;
         entity.ShelterId = obj.ShelterId;

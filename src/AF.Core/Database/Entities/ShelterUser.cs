@@ -1,8 +1,7 @@
 namespace AF.Core.Database.Entities;
 
-public class ShelterUser : IHasId
+public class ShelterUser
 {
-    public Guid Id { get; }
     public Guid UserId { get; set; }
     
     public Guid ShelterId { get; set; }

@@ -1,12 +1,13 @@
 ﻿using AF.Core.Database.Entities;
 using AF.Core.Database.Repositories;
+using AF.Core.Exceptions;
 using AutoMapper;
 using FluentValidation;
 using MediatR;
 
 namespace AF.Core.Features.Shelters;
 
-public record CreateShelterCommand(string Name, string Address, string Phone, string Email, string BankAccount)
+public record CreateShelterCommand(string Name, string Address, string Phone, string Email, string? BankAccount)
     : IRequest<Shelter>;
 
 public class CreateShelterCommandValidator : AbstractValidator<CreateShelterCommand>
@@ -32,23 +33,29 @@ public class CreateShelterCommandValidator : AbstractValidator<CreateShelterComm
             .Cascade(CascadeMode.Stop)
             .NotEmpty()
             .EmailAddress();
-
-        RuleFor(x => x.BankAccount)
-            .Cascade(CascadeMode.Stop)
-            .NotEmpty()
-            .MinimumLength(5);
     }
 }
 
-internal class CreateShelterCommandHandler(IMapper mapper, IShelterRepository shelterRepository)
+internal class CreateShelterCommandHandler(IMapper mapper, IShelterRepository shelterRepository,
+    IUserRepository userRepository, IMediator mediator,
+    RequestContext requestContext)
     : IRequestHandler<CreateShelterCommand, Shelter>
 {
-    public Task<Shelter> Handle(CreateShelterCommand request, CancellationToken cancellationToken)
+    public async Task<Shelter> Handle(CreateShelterCommand request, CancellationToken cancellationToken)
     {
         var entry = mapper.Map<Shelter>(request);
-
+        
+        var userId = requestContext.UserId;
+        var user = userRepository.GetById((Guid)userId);
+        if(user == null)
+            throw new EntityDoesNotExistException($"User with id {userId} not found");
+        
         shelterRepository.Add(entry);
-        //TODO: Get UserID from session and assign him to shelter and grant permissions
-        return Task.FromResult(entry);
+
+        var shelterUser = await mediator.Send(new AssignUserToShelterCommand((Guid)userId, entry.Id), cancellationToken);
+        
+        await mediator.Send(new ChangeUserPermissionsToShelterCommand(shelterUser.UserId, shelterUser.ShelterId, true, true), cancellationToken);
+        
+        return entry;
     }
 }

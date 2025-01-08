@@ -2,6 +2,10 @@
 
 namespace AF.Core.Database.Repositories;
 
-public interface IShelterUserRepository : IRepositoryBase<ShelterUser>
+public interface IShelterUserRepository
 {
+    IQueryable<ShelterUser> Items { get; }
+    ShelterUser? GetById(Guid userId, Guid shelterId);
+    void Update(ShelterUser obj);
+    void Add(ShelterUser obj);
 }
